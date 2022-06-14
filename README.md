@@ -1,13 +1,17 @@
 # Lalalander - lab 3 - variant 6
 
-This is an example project which demonstrates project structure and necessary
-CI checks. It is not the best structure for real-world projects, but good
-enough for educational purposes.
+This work can receive lambda term (as a composition of objects or string) 
+then transform it by selected reduction strategy with the following conversions:
+∗ Alpha conversion
+∗ Beta conversion
+∗ Eta conversion
+when all reduction is over, or the reduction reaches the limit, the interpreter stops and prints the results.
 
 ## Project structure
 
-- `lambdacal.py` -- implementation of `Lambda` class with `hello` and `add` features.
-- `lambdacal_test.py` -- unit and PBT tests for `Foo`.
+- `lambdacal.py` -- implementation of four categories of Lambda term and lambda calculation
+- `lambdacal_test.py` -- tests for `lambdacal`.
+- 
 
 ## Features
 
