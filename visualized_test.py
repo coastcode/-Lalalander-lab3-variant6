@@ -1,5 +1,4 @@
 import unittest
-import graphviz
 from visualized import *
 
 
