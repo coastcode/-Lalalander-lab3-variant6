@@ -1,7 +1,3 @@
-import nltk.sem.logic as logic
-lgp = logic.LogicParser()
-
-
 class Var(object):
     def __init__(self, v):
         assert isinstance(v, str)
