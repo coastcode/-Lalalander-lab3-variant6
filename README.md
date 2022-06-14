@@ -10,25 +10,19 @@ when all reduction is over, or the reduction reaches the limit, the interpreter 
 ## Project structure
 
 - `lambdacal.py` -- implementation of four categories of Lambda term and lambda calculation
-- `lambdacal_test.py` -- tests for `lambdacal`.
-- 
+- `lambdacal_test.py` -- tests for `lambdacal.py`
+- `visualized.py` --  visualize computational process
+- `visualized_test.py` --  visualize factorial process.
 
-## Features
-
-- PBT: `test_add_commutative`
 
 ## Contribution
 
-- Aleksandr Penskoi (EMAIL) -- all work.
+- Wu Chenyun (1329846782@qq.com) -- implementation and modify
+- Huang Yuting (hyut@hdu.edu.cn) -- implementation and modify
 
 ## Changelog
 
-- 29.03.2022 - 2
-  - Add test coverage.
-- 29.03.2022 - 1
-  - Update README. Add formal sections.
-- 29.03.2022 - 0
-  - Initial
+
 
 ## Design notes
 
