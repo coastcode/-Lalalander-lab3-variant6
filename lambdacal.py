@@ -1,3 +1,6 @@
+from math import factorial
+
+
 def x_():
     return 0
 
@@ -18,9 +21,8 @@ def predicate(f):
     else:
         return True
 
-def Church_0():
-    return lambda f: lambda x: x
-# Church_0 = lambda f: lambda x: x
+
+Church_0 = lambda f: lambda x: x
 Church_1 = lambda f: lambda x: f(x)
 Church_2 = lambda f: lambda x: f(f(x))
 Church_3 = lambda f: lambda x: f(f(f(x)))
