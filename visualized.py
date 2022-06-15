@@ -6,14 +6,15 @@ class Lambda(object):
 
     def FACT(self, n):
         cur = self.node
-        while cur.next != None:
+        while cur.next is not None:
             cur = cur.next
         cur.next = Node()
         cur = cur.next
         cur.label = "FACT"
-        while cur.next != None:
+        while cur.next is not None:
             cur = cur.next
-        fact = (lambda a: lambda v: a(a, v))(lambda s, x: 1 if x == 0 else x * s(s, x - 1))
+        fact = (lambda a: lambda v: a(a, v)) \
+            (lambda s, x: 1 if x == 0 else x * s(s, x - 1))
         a = fact(n)
         while n > 1:
             cur.addkid(f'{n}')
@@ -58,4 +59,3 @@ class Node:
     def addkid(self, n):
         self.children.append(n)
         return self
-
