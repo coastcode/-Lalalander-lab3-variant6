@@ -6,6 +6,10 @@ class Lambda(object):
 
     def FACT(self,n):
         cur = self.node
+        while cur.next!=None:
+            cur=cur.next
+        cur.next=Node()
+        cur=cur.next
         cur.label="FACT"
         while cur.next != None:
             cur = cur.next
@@ -28,19 +32,19 @@ class Lambda(object):
             if cur.label=="start":
                 cur=cur.next
             elif cur.label=="FACT":
-                res.append(cur.label)
+                print(cur.label)
                 for n in range(0,len(cur.children)-2):
-                    res.append(f'((λf.λx.n=0?1:n*f(n-1))(Y M)){cur.children[n]}')
-                    res.append(f'=>(λn.n=0?1:n * ((Y M)(n - 1)))){cur.children[n]}')
-                    res.append(f'=>{cur.children[n]}*((Y M)({cur.children[n]}- 1))')
-                    res.append(f'=>{cur.children[n]}*((Y M){cur.children[n+1]})')
-                # for i in range(0,len(cur.children)-2):
-                #     res.append(f'{cur.children[i]}*')
-                # res.append('1')
-                res.append(f'{cur.children[n + 1]}')
+                    print(f'((λf.λx.n=0?1:n*f(n-1))(Y M)){cur.children[n]}')
+                    print(f'=>(λn.n=0?1:n * ((Y M)(n - 1)))){cur.children[n]}')
+                    print(f'=>{cur.children[n]}*((Y M)({cur.children[n]}- 1))')
+                    print(f'=>{cur.children[n]}*((Y M){cur.children[n+1]})')
+                for i in range(0,len(cur.children)-2):
+                    res.append(f'{cur.children[i]}*')
+                res.append('1')
+                res.append(f'{cur.children[i + 2]}')
                 cur=cur.next
         res.append("}")
-        print(res)
+        # print(res)
         return "\n".join(res)
 
 class Node:
@@ -53,3 +57,9 @@ class Node:
     def addkid(self, n):
         self.children.append(n)
         return self
+
+
+# Lbd = Lambda()
+# Lbd.FACT(5)
+# Lbd.FACT(8)
+# Lbd.visualize()
