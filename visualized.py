@@ -13,8 +13,8 @@ class Lambda(object):
         cur.label = "FACT"
         while cur.next is not None:
             cur = cur.next
-        fact = (lambda a: lambda v:
-        a(a, v))(lambda s, x: 1 if x == 0 else x * s(s, x - 1))
+        fact = (lambda a: lambda v: a(a, v))(
+            lambda s, x: 1 if x == 0 else x * s(s, x - 1))
         a = fact(n)
         while n > 1:
             cur.addkid(f'{n}')
