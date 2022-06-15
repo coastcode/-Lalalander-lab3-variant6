@@ -1,11 +1,10 @@
 import unittest
-
 from lambdacal import *
 
 
 class FactorialTest(unittest.TestCase):
     def test_Church_number(self):
-        self.assertEqual(interpret(Church_0), 0)
+        self.assertEqual(interpret(Church_0()), 0)
         self.assertEqual(interpret(Church_1), 1)
         self.assertEqual(interpret(Church_2), 2)
         self.assertEqual(interpret(Church_3), 3)
