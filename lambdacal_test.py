@@ -13,16 +13,16 @@ class FactorialTest(unittest.TestCase):
 
     def test_Increment(self):
         self.assertEqual(interpret(SUCC(Church_3)), 4)
-        self.assertEqual(interpret(SUCC(Church_0)), 1)
+        self.assertEqual(interpret(SUCC(Church_0())), 1)
         self.assertEqual(interpret(SUCC(Church_5)), 6)
 
     def test_Addition(self):
-        self.assertEqual(interpret(PLUS(Church_0)(Church_1)), 1)
+        self.assertEqual(interpret(PLUS(Church_0())(Church_1)), 1)
         self.assertEqual(interpret(PLUS(Church_2)(Church_3)), 5)
         self.assertEqual(interpret(PLUS(Church_5)(Church_1)), 6)
 
     def test_Multiplication(self):
-        self.assertEqual(interpret(MULT(Church_0)(Church_3)), 0)
+        self.assertEqual(interpret(MULT(Church_0())(Church_3)), 0)
         self.assertEqual(interpret(MULT(Church_2)(Church_3)), 6)
         self.assertEqual(interpret(MULT(Church_5)(Church_5)), 25)
 
@@ -44,7 +44,7 @@ class FactorialTest(unittest.TestCase):
         self.assertEqual(predicate(NOT(Church_False)), True)
 
     def test_Iszero(self):
-        self.assertEqual(predicate(ISZERO(Church_0)), True)
+        self.assertEqual(predicate(ISZERO(Church_0())), True)
         self.assertEqual(predicate(ISZERO(Church_5)), False)
 
     def test_Factorial(self):
