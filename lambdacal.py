@@ -1,113 +1,4 @@
-class Var(object):
-    def __init__(self, v):
-        assert isinstance(v, str)
-        self.v = v
-
-    def __str__(self):
-        return self.v
-
-    def free(self):
-        return {self.v}
-
-    def bound(self):
-        return {}
-
-    def sub(self, v, exp):
-        if self.v == v:
-            return exp
-        return self
-
-    def beta(self):
-        return Var(self.v)
-
-
-class Const(object):
-    def __init__(self, c):
-        assert isinstance(c, str)
-        self.c = c
-
-    def __str__(self):
-        return self.c
-
-    def free(self):
-        return {}
-
-    def bound(self):
-        return {}
-
-    def sub(self, v, exp):
-        return self
-
-
-class Comb(object):
-    def __init__(self, s, t):
-        self.s = s
-        self.t = t
-
-    def __str__(self):
-        return "( {} {} )".format(self.s, self.t)
-
-    def free(self):
-        return self.s.free() | self.t.free()
-
-    def bound(self):
-        return self.s.bound() | self.t.bound()
-
-    def sub(self, v, exp):
-        return Comb(self.s.sub(v, exp), self.t.sub(v, exp))
-
-    def beta(self):
-        if isinstance(self.s, Comb):
-            return Comb(self.s.beta(), self.t)
-
-        if isinstance(self.s, Abst):
-            return self.s.s.sub(self.s.x, self.t)
-
-        if isinstance(self.t, Abst) or isinstance(self.t, Comb):
-            return Comb(self.s, self.t.beta())
-        return self
-
-    def alpha(self, x, y):
-        if isinstance(self.t, Var):
-            if str.find(self.s, x) == -1:
-                return self.s.replace(x, y)
-            return self
-
-        if isinstance(self.t, Abst) or isinstance(self.t, Comb):
-            return Comb(self.s, self.t.alpha(x, y))
-
-
-class Abst(object):
-    def __init__(self, x, s):
-        self.x = x
-        self.s = s
-
-    def __str__(self):
-        return "\\{} -> {}".format(self.x, self.s)
-
-    def free(self):
-        return self.s.free() - {self.x}
-
-    def bound(self):
-        return {self.x} | self.s.bound()
-
-    def sub(self, v, exp):
-        if v == self.x: return self
-        return Abst(self.x, self.s.sub(v, exp))
-
-    def beta(self):
-        return Abst(self.x, self.s.beta())
-
-    def alpha(self, x, y):
-        return Abst(self.x, self.s.alpha(x, y))
-
-
-zero = Abst('f', Abst('x', Var('x')))
-one = Abst('f', Abst('x', Comb(Var('f'), Var('x'))))
-two = Abst('f', Abst('x', Comb(Var('f'), Comb(Var('f'), Var('x')))))
-three = Abst('f', Abst('x', Comb(Var('f'), Comb(Var('f'), Comb(Var('f'), Var('x'))))))
-four = Abst('f', Abst('x', Comb(Var('f'), Comb(Var('f'), Comb(Var('f'), Comb(Var('f'), Var('x')))))))
-five = Abst('f', Abst('x', Comb(Var('f'), Comb(Var('f'), Comb(Var('f'), Comb(Var('f'), Comb(Var('f'), Var('x'))))))))
+from math import factorial
 
 
 def x_():
@@ -131,67 +22,35 @@ def predicate(f):
         return True
 
 
-def sum(m, n):
-    return Abst('f', Abst('x', Comb(Comb(m, Var('f')), Comb(Comb(n, Var('f')), Var('x')))))
+Church_0 = lambda f: lambda x: x
+Church_1 = lambda f: lambda x: f(x)
+Church_2 = lambda f: lambda x: f(f(x))
+Church_3 = lambda f: lambda x: f(f(f(x)))
+Church_4 = lambda f: lambda x: f(f(f(f(x))))
+Church_5 = lambda f: lambda x: f(f(f(f(f(x)))))
 
+SUCC = lambda n: lambda f: lambda x: f(n(f)(x))
 
-def succ(n):
-    return Abst('f', Abst('x', Comb(Var('f'), Comb(Comb(n, Var('f')), Var('x')))))
+PLUS = lambda m: lambda n: lambda f: lambda x: m(f)(n(f)(x))
 
+MULT = lambda m: lambda n: m(PLUS(n))(Church_0)
 
-def mult(m, n):
-    return Abst('f', Abst('x', Comb(Comb(m, Comb(n, Var('f'))), Var('x'))))
+PRED = lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda u: x)(lambda u: u)
 
+Church_True = lambda u: lambda v: u
+Church_False = lambda u: lambda v: v
 
-def lambda_true():
-    return Abst('u', Abst('v', Var('u')))
+# AND = λ p.λ q.p q p
+AND = lambda p: lambda q: p(q)(p)
+# OR = λ p.λ q.p p q
+OR = lambda p: lambda q: p(p)(q)
+# NOT = λ p.p FALSE TRUE
+NOT = lambda p: p(Church_False)(Church_True)
 
+ISZERO = lambda n: n(lambda x: Church_False)(Church_True)
 
-def lambda_false():
-    return Abst('u', Abst('v', Var('v')))
+FACT_ = lambda n: n(lambda u: MULT(n)(FACT_(PRED(n))))(Church_1)
 
-
-def iszero(n):
-    return Comb(Comb(Abst('n', n), Abst('x', lambda_false())), lambda_true())
-
-
-def pred(n):
-    return Abst('f', Abst('x', Comb(
-        Comb(Comb(n, Abst('g', Abst('h', Comb(Var('h'), Comb(Var('g'), Var('f')))))), Abst('u', Var('x'))),
-        Abst('u', Var('u')))))
-
-
-def Y1(p):
-    return Abst('f', Comb(
-        Comb(Abst('x', Comb(Var('f'), Comb(Var('x'), Var('x')))), Abst('x', Comb(Var('f'), Comb(Var('x'), Var('x'))))),
-        p))
-
-
-def Y():
-    return Abst('f', Abst('x', Comb(Comb(Var('f'), Var('f')), Var('x'))))
-
-
-def F(n):
-    return Abst('f', Abst('n', Comb(Comb(iszero(n), one), mult(n, Comb(Var('f'), pred(n))))))
-
-
-def fact(z):
-    return Comb(Y(), F(z))
-
-
-# def fact(n):
-#     T=Abst('f',Abst('x',Comb(Comb(Var('f'),Var('f')),Var('x'))))
-#     G=Abst('g',Abst('n',Comb(Comb(n,Abst('g',mult(n,Comb(Comb(Var('g'),Var('g')),pred(n))))),one)))
-#     return Comb(T,G)
-
-
-# x=fact(two)
-# print(x)
-# for _ in range(30):
-#     x = x.beta()
-#     print(x)
-
-x = iszero(one)
-for _ in range(5):
-    x = x.beta()
-print(x)
+T = lambda f: lambda x: f(f)(x)
+G = lambda g: lambda n: n(lambda u: MULT(n)(g(g)(PRED(n))))(Church_1)
+FACT = T(G)
