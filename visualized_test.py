@@ -7,8 +7,8 @@ class FactorialTest(unittest.TestCase):
         Lbd = Lambda()
         self.assertEqual(Lbd.FACT(5), 120)
         self.assertEqual(Lbd.FACT(8), 40320)
-        dot=Lbd.visualize()
-        f=open('fsm.dot','w')
+        dot = Lbd.visualize()
+        f = open('fsm.dot', 'w')
         f.write(dot)
         f.close()
 
