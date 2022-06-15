@@ -34,9 +34,8 @@ SUCC = lambda n: lambda f: lambda x: f(n(f)(x))
 PLUS = lambda m: lambda n: lambda f: lambda x: m(f)(n(f)(x))
 
 MULT = lambda m: lambda n: m(PLUS(n))(Church_0)
-
-PRED = lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f))) \
-    (lambda u: x)(lambda u: u)
+PRED = lambda n: lambda f: lambda x:\
+    n(lambda g: lambda h: h(g(f)))(lambda u: x)(lambda u: u)
 
 Church_True = lambda u: lambda v: u
 Church_False = lambda u: lambda v: v
