@@ -1,6 +1,3 @@
-from math import factorial
-
-
 def x_():
     return 0
 
@@ -21,8 +18,9 @@ def predicate(f):
     else:
         return True
 
-
-Church_0 = lambda f: lambda x: x
+def Church_0():
+    return lambda f: lambda x: x
+# Church_0 = lambda f: lambda x: x
 Church_1 = lambda f: lambda x: f(x)
 Church_2 = lambda f: lambda x: f(f(x))
 Church_3 = lambda f: lambda x: f(f(f(x)))
@@ -35,14 +33,12 @@ PLUS = lambda m: lambda n: lambda f: lambda x: m(f)(n(f)(x))
 
 MULT = lambda m: lambda n: m(PLUS(n))(Church_0)
 
-PRED = lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda u: x)(lambda u: u)
+PRED = lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f))) \
+    (lambda u: x)(lambda u: u)
 
 Church_True = lambda u: lambda v: u
 Church_False = lambda u: lambda v: v
-
-# AND = λ p.λ q.p q p
 AND = lambda p: lambda q: p(q)(p)
-# OR = λ p.λ q.p p q
 OR = lambda p: lambda q: p(p)(q)
 # NOT = λ p.p FALSE TRUE
 NOT = lambda p: p(Church_False)(Church_True)
